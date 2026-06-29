@@ -5,6 +5,18 @@
 <h1 align="center">🌊 OceanEvolution</h1>
 
 <p align="center">
+
+<img src="https://img.shields.io/badge/Version-v3.0-0077B6?style=for-the-badge&logo=github">
+
+<img src="https://img.shields.io/badge/Status-Public%20Demo-06D6A0?style=for-the-badge">
+
+<img src="https://img.shields.io/badge/Platform-Web-8338EC?style=for-the-badge">
+
+<img src="https://img.shields.io/badge/Engine-JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black">
+
+</p>
+
+<p align="center">
 <b>Eat • Evolve • Survive</b>
 </p>
 
