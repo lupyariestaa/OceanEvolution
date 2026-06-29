@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
+  <title>Ocean Evolution V3</title>
+  <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+
+<!-- LOADING -->
+<div id="loading-screen" class="screen">
+  <div class="loading-inner">
+    <div class="loading-logo">🌊</div>
+    <h1 class="loading-title">Ocean Evolution</h1>
+    <p class="loading-sub">V3</p>
+    <div class="loading-bar-wrap"><div id="loading-bar" class="loading-bar"></div></div>
+  </div>
+</div>
+
+<!-- SPLASH -->
+<div id="splash-screen" class="screen hidden">
+  <canvas id="splash-canvas" class="bg-canvas"></canvas>
+  <div class="splash-ui">
+    <div class="splash-badge">🌊</div>
+    <h1 class="splash-title">Ocean Evolution</h1>
+    <p class="splash-v">V3</p>
+    <p class="splash-desc" data-i18n="hint"></p>
+    <div id="splash-stats" class="splash-stats"></div>
+    <div class="diff-row">
+      <button id="easy-btn"   class="diff-btn" data-i18n="easy"></button>
+      <button id="normal-btn" class="diff-btn active" data-i18n="normal"></button>
+      <button id="hard-btn"   class="diff-btn" data-i18n="hard"></button>
+    </div>
+    <button id="play-btn" class="btn-primary" data-i18n="play"></button>
+    <div class="splash-footer">
+      <button id="lang-btn"  class="icon-btn">🇮🇩 ID</button>
+      <button id="mute-btn"  class="icon-btn">🔊</button>
+    </div>
+
+    <!-- Shop -->
+    <div class="shop-panel">
+      <div class="shop-header">
+        <h3 data-i18n="shop"></h3>
+        <div class="shop-tabs">
+          <button id="tab-skins"    class="tab-btn active" data-i18n="skins"></button>
+          <button id="tab-upgrades" class="tab-btn"        data-i18n="upgrades"></button>
+        </div>
+      </div>
+      <div id="shop-skins"    class="shop-grid"></div>
+      <div id="shop-upgrades" class="shop-list hidden"></div>
+    </div>
+
+    <!-- Leaderboard & Achievements -->
+    <div class="lb-panel"><h3 data-i18n="leaderboard"></h3><div id="leaderboard-list" class="lb-list"></div></div>
+    <div class="ach-panel"><h3 data-i18n="achievements"></h3><div id="ach-list" class="ach-list"></div></div>
+  </div>
+</div>
+
+<!-- GAME CANVAS -->
+<canvas id="game-canvas"></canvas>
+
+<!-- HUD -->
+<div id="hud" class="hidden">
+  <div class="hud-top">
+    <div class="hud-stat"><span class="hud-label" data-i18n="score"></span><span id="score-val" class="hud-val accent">0</span></div>
+    <div class="hud-stat"><span class="hud-label" data-i18n="level"></span><span id="level-val" class="hud-val">1</span></div>
+    <div class="hud-stat"><span class="hud-label">💰</span><span id="coins-val" class="hud-val" style="color:#ffd740">0</span></div>
+    <div class="hud-stat"><span class="hud-label">⏱</span><span id="time-val" class="hud-val">0:00</span></div>
+    <div class="hud-stat"><span id="biome-val" class="hud-val biome-val">—</span></div>
+    <button class="icon-btn hud-pause" onclick="document.getElementById('pause-screen').classList.remove('hidden');window._game?.pause?.()">⏸</button>
+  </div>
+  <div class="bar-row"><span class="bar-label" data-i18n="hp"></span><div class="bar-wrap hp-wrap"><div id="health-bar" class="bar hp-bar"></div></div></div>
+  <div class="bar-row"><span class="bar-label" data-i18n="xp"></span><div class="bar-wrap xp-wrap"><div id="xp-bar" class="bar xp-bar"></div></div></div>
+  <div class="evo-row">
+    <div class="evo-bar-wrap"><div id="evo-stages" class="evo-stages"></div><div id="evo-fill" class="evo-fill"></div></div>
+    <div class="evo-labels"><span id="evo-label" class="evo-name">Tiny Fish</span><span id="evo-next" class="evo-next">Small Fish →</span></div>
+  </div>
+  <div class="action-row">
+    <div class="boost-wrap">
+      <svg class="boost-svg" viewBox="0 0 44 44"><circle cx="22" cy="22" r="18" stroke="rgba(255,255,255,0.12)" stroke-width="4" fill="none"/><circle id="boost-ring" cx="22" cy="22" r="18" stroke="#00e5ff" stroke-width="4" fill="none" stroke-dasharray="113.1" stroke-dashoffset="0" stroke-linecap="round" transform="rotate(-90 22 22)"/></svg>
+      <span class="boost-icon">⚡</span>
+    </div>
+    <button id="skill-btn" class="skill-btn">—</button>
+  </div>
+  <!-- Mutations chips -->
+  <div id="mut-list" class="mut-list"></div>
+  <!-- Combo display -->
+  <div id="combo-display" class="combo-display hidden"></div>
+  <!-- Event banner -->
+  <div id="event-banner" class="event-banner hidden"></div>
+  <!-- Toasts -->
+  <div id="levelup-toast" class="toast hidden"><span class="toast-icon">⬆</span><span id="levelup-text">Level Up!</span></div>
+  <div id="evo-toast"     class="toast evo hidden"><span class="toast-icon">✨</span><span id="evo-text">Evolution!</span></div>
+  <div id="boss-toast"    class="toast boss hidden"><span class="toast-icon">⚠</span><span data-i18n="bossWarning"></span></div>
+  <div id="ach-toast"     class="toast ach hidden"><span id="ach-text">Achievement!</span></div>
+  <div id="event-toast"   class="toast event hidden"><span id="event-text">Event!</span></div>
+  <div id="biome-toast"   class="toast biome hidden"><span id="biome-text">Biome!</span></div>
+  <div id="share-toast"   class="toast hidden"><span id="share-text">Shared!</span></div>
+</div>
+
+<!-- PATH CHOICE -->
+<div id="path-screen" class="screen overlay hidden">
+  <div class="path-box">
+    <h2 data-i18n="chooseEvo"></h2>
+    <div class="path-choices">
+      <button id="choose-predator" class="path-btn predator-btn"><span class="path-icon">🦈</span><span class="path-name" data-i18n="predator"></span><span class="path-desc" data-i18n="predatorDesc"></span></button>
+      <button id="choose-toxin"    class="path-btn toxin-btn"><span class="path-icon">🐡</span><span class="path-name" data-i18n="toxin"></span><span class="path-desc" data-i18n="toxinDesc"></span></button>
+    </div>
+  </div>
+</div>
+
+<!-- MUTATION CHOICE -->
+<div id="mutation-screen" class="screen overlay hidden">
+  <div class="mutation-box">
+    <h2 data-i18n="mutationTitle"></h2>
+    <div id="mutation-list" class="mutation-list"></div>
+  </div>
+</div>
+
+<!-- PAUSE -->
+<div id="pause-screen" class="screen overlay hidden">
+  <div class="pause-box">
+    <h2 data-i18n="paused"></h2>
+    <button id="resume-btn" class="btn-primary"   data-i18n="resume"></button>
+    <button id="menu-btn"   class="btn-secondary" data-i18n="mainMenu"></button>
+  </div>
+</div>
+
+<!-- GAME OVER -->
+<div id="gameover-screen" class="screen hidden">
+  <canvas id="go-canvas" class="bg-canvas"></canvas>
+  <div class="go-ui">
+    <h1 class="go-title" data-i18n="gameOver"></h1>
+    <div id="go-newbest" class="go-newbest hidden">🏆 NEW BEST!</div>
+    <div class="go-stats">
+      <div class="go-stat"><span class="go-label" data-i18n="score"></span>      <span id="go-score" class="go-val accent">0</span></div>
+      <div class="go-stat"><span class="go-label" data-i18n="best"></span>       <span id="go-best"  class="go-val">0</span></div>
+      <div class="go-stat"><span class="go-label" data-i18n="level"></span>      <span id="go-level" class="go-val">1</span></div>
+      <div class="go-stat"><span class="go-label" data-i18n="evolution"></span>  <span id="go-evo"   class="go-val">—</span></div>
+      <div class="go-stat"><span class="go-label" data-i18n="timeSurvived"></span><span id="go-time" class="go-val">—</span></div>
+      <div class="go-stat"><span class="go-label" data-i18n="fishEaten"></span>  <span id="go-fish"  class="go-val">0</span></div>
+      <div class="go-stat"><span class="go-label" data-i18n="bossKilled"></span> <span id="go-boss"  class="go-val">0</span></div>
+      <div class="go-stat"><span class="go-label" data-i18n="distTraveled"></span><span id="go-dist" class="go-val">0m</span></div>
+      <div class="go-stat"><span class="go-label" data-i18n="maxCombo"></span>   <span id="go-combo" class="go-val">0</span></div>
+      <div class="go-stat"><span class="go-label" data-i18n="coins"></span>      <span id="go-coins" class="go-val" style="color:#ffd740">0</span></div>
+    </div>
+    <div class="go-btns">
+      <button id="restart-btn" class="btn-primary"   data-i18n="playAgain"></button>
+      <button id="share-btn"   class="btn-share"     data-i18n="shareScore"></button>
+      <button id="menu-btn2"   class="btn-secondary" data-i18n="mainMenu"></button>
+    </div>
+  </div>
+</div>
+
+<!-- DAILY REWARD -->
+<div id="daily-screen" class="screen overlay hidden">
+  <div class="daily-box">
+    <div class="daily-icon">🎁</div>
+    <h2 data-i18n="dailyReward"></h2>
+    <p id="daily-reward-text" class="daily-coins">+150 💰</p>
+    <button id="daily-claim" class="btn-primary">Claim!</button>
+    <button id="daily-skip"  class="btn-secondary" style="margin-top:6px">Skip</button>
+  </div>
+</div>
+
+<!-- Shop toast -->
+<div id="shop-toast" class="toast hidden"><span id="shop-toast-text"></span></div>
+<!-- Daily toast -->
+<div id="daily-toast" class="toast hidden"><span id="daily-reward-text2">Daily reward claimed!</span></div>
+
+<script type="module" src="js/main.js"></script>
+</body>
+</html>
