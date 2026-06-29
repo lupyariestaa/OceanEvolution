@@ -71,6 +71,13 @@ window.addEventListener('DOMContentLoaded', () => {
   $('normal-btn')   ?.addEventListener('click', ()=>setDifficulty('normal'));
   $('hard-btn')     ?.addEventListener('click', ()=>setDifficulty('hard'));
   $('lang-btn')     ?.addEventListener('click', ()=>{ UI.toggleLang(); UI.showSplashStats(); });
+  $('evo-tree-btn')?.addEventListener('click', () => {
+    $('evo-tree-screen')?.classList.remove('hidden');
+});
+
+$('evo-tree-close')?.addEventListener('click', () => {
+    $('evo-tree-screen')?.classList.add('hidden');
+});
   $('mute-btn')     ?.addEventListener('click', ()=>{ const m=Audio.toggleMute(); Storage.setMute(m); const b=$('mute-btn'); if(b) b.textContent=m?'🔇':'🔊'; });
 
   // Shop tabs
