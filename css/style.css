@@ -329,3 +329,13 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(
 .shared-dot   { background: #29b6f6; }
 .predator-dot { background: #ef5350; }
 .toxin-dot    { background: #76ff03; }
+#evo-tree-btn{
+    min-width:58px;
+    height:58px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    font-size:24px;
+}
